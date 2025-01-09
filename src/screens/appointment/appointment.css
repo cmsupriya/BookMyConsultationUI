@@ -1,0 +1,24 @@
+.appointment-container {
+    margin-bottom: 20px;
+  }
+  
+  .appointment-login-message {
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  
+  .appointment-item {
+    padding: 10px;
+    margin: 20px 10px;
+  }
+  
+  .appointment-item h2 {
+    margin-bottom: 2px;
+  }
+  
+  .appointment-item h5 {
+    margin-bottom: 20px;
+  }
+  

@@ -1,0 +1,52 @@
+.doctor-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    margin: 0 auto;
+  }
+  
+  .doctor-list-container > div {
+    width: 100%;
+  }
+
+  .speciality-heading {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .speciality-select {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .doctor-box {
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .doctor-name {
+    font-size: 20px;
+    margin-bottom: 1px;
+    margin-top: 10px;
+  }
+  
+  .speciality, .rating {
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-top: 1px;
+    padding: 1px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .book-appointment, .view-details {
+    width: 40%;
+    padding: 10px;
+  }
+  
