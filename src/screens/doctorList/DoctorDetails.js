@@ -20,24 +20,22 @@ const DoctorDetails = ({ doctor }) => {
   }, [doctor]);
 
   return (
-    <div className="modal-overlay">
-      <div className="doctor-details-modal">
-        <div className="modal-header">
-          <h2>Doctor Details</h2>
-        </div>
-        {doctorDetails && (
-          <div className="modal-content">
-            <h3>Dr. {doctorDetails.firstName + " " + doctorDetails.lastName}</h3>
-            <h5>Total Experience: {doctorDetails.totalYearsOfExp}</h5>
-            <h5>Speciality: {doctorDetails.speciality}</h5>
-            <h5>Date of Birth: {doctorDetails.dob}</h5>
-            <h5>City: {doctorDetails.address.city}</h5>
-            <h5>Email: {doctorDetails.emailId}</h5>
-            <h5>Mobile: {doctorDetails.mobile}</h5>
-            <h5>Rating: <Rating value={doctorDetails.rating} readOnly /></h5>
-          </div>
-        )}
+    <div className="doctor-details-modal">
+      <div className="modal-header">
+        <h2>Doctor Details</h2>
       </div>
+      {doctorDetails && (
+        <div className="modal-content">
+          <h3>Dr. {doctorDetails.firstName + " " + doctorDetails.lastName}</h3>
+          <h5>Total Experience: {doctorDetails.totalYearsOfExp}</h5>
+          <h5>Speciality: {doctorDetails.speciality}</h5>
+          <h5>Date of Birth: {doctorDetails.dob}</h5>
+          <h5>City: {doctorDetails.address.city}</h5>
+          <h5>Email: {doctorDetails.emailId}</h5>
+          <h5>Mobile: {doctorDetails.mobile}</h5>
+          <h5>Rating: <Rating value={doctorDetails.rating} readOnly /></h5>
+        </div>
+      )}
     </div>
   );
 };

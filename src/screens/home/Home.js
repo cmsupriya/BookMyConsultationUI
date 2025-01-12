@@ -16,16 +16,10 @@ const Home = () => {
     <div>
       <Header />
       <div className="home-container">
-        <button
-          className={activeTab === 0 ? 'active' : ''}
-          onClick={() => handleTabChange(0)}
-        >
+        <button className={activeTab === 0 ? 'active' : ''} onClick={() => handleTabChange(0)}>
           DOCTORS
         </button>
-        <button
-          className={activeTab === 1 ? 'active' : ''}
-          onClick={() => handleTabChange(1)}
-        >
+        <button className={activeTab === 1 ? 'active' : ''} onClick={() => handleTabChange(1)}>
           APPOINTMENT
         </button>
       </div>

@@ -5,17 +5,19 @@ import DoctorDetails from './DoctorDetails';
 import { getDoctors } from '../../util/fetch';
 import useService from "../../common/hooks/useService";
 import Rating from '@mui/material/Rating';
-import { Box, Button } from '@mui/material';
-
+import { Box, Button, Modal } from '@mui/material';
+import useAuth from '../../common/hooks/useAuth';
 
 const DoctorList = () => {
+  const { AuthCtx } = useAuth();
+  const { loggedInUser} = useContext(AuthCtx);
   const [selectedSpeciality, setSelectedSpeciality] = useState('');
   const [doctors, setDoctors] = useState([]);
   const [showBookAppointment, setShowBookAppointment] = useState(false);
   const [showViewDetails, setShowViewDetails] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const { ServicesCtx } = useService();
-	const { showMessage } = useContext(ServicesCtx);
+  const { showMessage } = useContext(ServicesCtx);
 
   useEffect(() => {
     getDoctors()
@@ -41,6 +43,11 @@ const DoctorList = () => {
     setShowViewDetails(true);
   };
 
+  const handleClose = () => {
+    setShowViewDetails(false);
+    setShowBookAppointment(false);
+  }
+
   const filteredDoctors = selectedSpeciality
     ? doctors.filter((doctor) => doctor.speciality === selectedSpeciality)
     : doctors;
@@ -61,15 +68,16 @@ const DoctorList = () => {
       {filteredDoctors.length > 0 && (
         <div>
           {filteredDoctors.map((doctor, index) => (
-            <Box className="doctor-box" key={index} sx={(theme) => ({boxShadow: 1, borderRadius: 1})}>
+            <Box className="doctor-box" key={index} sx={(theme) => ({ boxShadow: 1, borderRadius: 1 })}>
               <h5 className="doctor-name">Name : {doctor.firstName + " " + doctor.lastName}</h5>
               <h5 className="speciality">Speciality : {doctor.speciality}</h5>
               <h5 className="rating">Rating : <Rating value={doctor.rating} readOnly /></h5>
               <div className="button-container">
-                <Button color='primary' variant='contained' size="small" className="book-appointment" onClick={() => handleBookAppointment(doctor)}>
+                <Button color='primary' variant='contained' size="small" className="book-appointment" onClick={() => handleBookAppointment(doctor)} 
+                  disabled={loggedInUser == null}>
                   Book Appointment
                 </Button>
-                <Button color='primary' variant='contained' size="small" className="view-details" onClick={() => handleViewDetails(doctor)}>
+                <Button color='success' variant='contained' size="small" className="view-details" onClick={() => handleViewDetails(doctor)}>
                   View Details
                 </Button>
               </div>
@@ -79,17 +87,27 @@ const DoctorList = () => {
       )}
 
       {showBookAppointment && selectedDoctor && (
-        <div>
-          <h2>Book Appointment Component</h2>
-          <BookAppointment doctor={selectedDoctor} />
-        </div>
+        <Modal
+          open={showBookAppointment}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <Box className="modal-overlay">
+            <BookAppointment doctor={selectedDoctor} />
+          </Box>
+        </Modal>
       )}
 
       {showViewDetails && selectedDoctor && (
-        <div>
-          <h2>Doctor Details</h2>
-          <DoctorDetails doctor={selectedDoctor} />
-        </div>
+        <Modal
+          open={showViewDetails}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <Box className="modal-overlay">
+            <DoctorDetails doctor={selectedDoctor} />
+          </Box>
+        </Modal>
       )}
     </div>
   );

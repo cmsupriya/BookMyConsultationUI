@@ -1,3 +1,30 @@
 .book-appointment-modal {
-  width: 700px!important;
+  width: 700px;
+}
+
+.appointment-date {
+  margin-top: 5px!important;
+  margin-bottom: 10px!important;
+
+  > div {
+    padding: 0;
+  }
+
+  input,
+  button {
+    margin: 0 !important;
+  }
+
+  button {
+    padding-bottom: 2px !important;
+  }
+}
+
+.doctor-name input {
+  margin: 0 !important;
+}
+
+.doctor-name, .time-slot, .prior-medical-history, .symptoms {
+  display: block !important;
+  margin: 5px 0 10px 0 !important;
 }

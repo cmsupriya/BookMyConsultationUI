@@ -3,7 +3,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Home from "../screens/home/Home";
 import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import Container from '@mui/material/Container';
-import {useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Grid from '@mui/material/Grid';
 import Login from "./login/Login";
 import Register from "../screens/register/Register";
@@ -29,7 +29,7 @@ const theme = createTheme({
 });
 
 const Controller = () => {
-  const { AuthCtx } = useAuth();
+	const { AuthCtx } = useAuth();
 	const { ServicesCtx } = useService();
 	const { accessToken } = useContext(AuthCtx);
 	const { message, level, showMessage } = useContext(ServicesCtx);
@@ -48,22 +48,10 @@ const Controller = () => {
 		showMessage(null, null);
 	};
 
-    return (
-      <ThemeProvider theme={theme}>
-        <Router>
-          <Home />
-          <Container maxWidth={false} sx={{ marginBottom: "30px", marginTop: "85px" }}>
-            <Grid container spacing={2} sx={{ paddingTop: "24px" }}>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <Navigate to="/" />
-                  }
-                />
-  						</Routes>
-					</Grid>
-				</Container>
+	return (
+		<ThemeProvider theme={theme}>
+			<Router>
+				<Home />
 				<Snackbar
 					anchorOrigin={{ vertical: "top", horizontal: "right" }}
 					open={showInfo}
@@ -75,8 +63,8 @@ const Controller = () => {
 					</Alert>
 				</Snackbar>
 			</Router>
-      </ThemeProvider>
-  );
+		</ThemeProvider>
+	);
 };
 
 export default Controller;

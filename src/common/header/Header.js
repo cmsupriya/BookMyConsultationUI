@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Button from "@mui/material/Button";
+import { Button, Box, Modal } from "@mui/material";
 import "./Header.css";
 import LoginModal from "../../screens/login/Login";
 import RegisterModal from "../../screens/register/Register";
@@ -12,7 +12,7 @@ const Header = () => {
   const { accessToken, logout, loggedInUser, hasRole } = useContext(AuthCtx);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-	const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(false);
   const { ServicesCtx } = useService();
   const { showMessage } = useContext(ServicesCtx);
   const [activeTab, setActiveTab] = useState(0);
@@ -33,7 +33,7 @@ const Header = () => {
     setIsLoginModalOpen(false);
   };
 
-  const handleModalClose = () => {
+  const handleClose = () => {
     setIsLoginModalOpen(false);
     setIsRegisterModalOpen(false);
   };
@@ -63,13 +63,18 @@ const Header = () => {
         }
         {
           loggedInUser != null &&
-          <Button variant="contained" color="secondary" onClick={() => doLogout()}  size="small">
+          <Button variant="contained" color="secondary" onClick={() => doLogout()} size="small">
             LOGOUT
           </Button>
         }
       </div>
       {(isLoginModalOpen || isRegisterModalOpen) && (
-        <div className="modal-overlay">
+        <Modal
+          open={isLoginModalOpen || isRegisterModalOpen}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <Box className="modal-overlay">
             <div className="header-auth-modal">
               <div className="modal-header">
                 <h2>Authentication</h2>
@@ -78,12 +83,11 @@ const Header = () => {
                 <button className={activeTab === 0 ? 'active' : ''} onClick={handleLoginClick}>Login</button>
                 <button className={activeTab === 1 ? 'active' : ''} onClick={handleRegisterClick}>Register</button>
               </div>
+              {isLoginModalOpen && <LoginModal />}
+              {isRegisterModalOpen && <RegisterModal />}
             </div>
-            <div>
-            {isLoginModalOpen && <LoginModal onClose={handleModalClose} />}
-            {isRegisterModalOpen && <RegisterModal onClose={handleModalClose} />}
-            </div>
-        </div>
+          </Box>
+        </Modal>
       )}
     </div>
   );

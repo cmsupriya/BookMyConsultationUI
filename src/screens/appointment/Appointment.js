@@ -4,8 +4,7 @@ import RateAppointment from "./RateAppointment";
 import { getAppointments } from '../../util/fetch';
 import useService from "../../common/hooks/useService";
 import useAuth from "../../common/hooks/useAuth";
-import Button from "@mui/material/Button";
-import { Box } from "@mui/material";
+import { Button, Box, Modal } from "@mui/material";
 
 const Appointment = () => {
   const { AuthCtx } = useAuth();
@@ -26,12 +25,14 @@ const Appointment = () => {
           showMessage(json.reason, "error");
         });
     }
-  }, [loggedInUserId, accessToken]);
+  }, []);
 
   const handleRateAppointment = (appointment) => {
     setSelectedAppointment(appointment);
     setShowRateAppointment(true);
   };
+
+  const handleClose = () => setShowRateAppointment(false);
 
   return (
     <div className="appointment-container">
@@ -41,6 +42,7 @@ const Appointment = () => {
           <center><h4>Login to see appointments</h4></center>
         </div>
       }
+
       {loggedInUserId != null && appointments.length > 0 && appointments.map((appointment, index) => (
         <Box key={index} className="appointment-item" sx={(theme) => ({ boxShadow: 1, borderRadius: 1 })}>
           <div>
@@ -52,14 +54,20 @@ const Appointment = () => {
               RATE APPOINTMENT
             </Button>
           </div>
-          {showRateAppointment && selectedAppointment && (
-            <div>
-              <h2>Rate Appointment Component</h2>
-              <RateAppointment appointment={selectedAppointment} />
-            </div>
-          )}
         </Box>
       ))}
+
+      {showRateAppointment && selectedAppointment && (
+        <Modal
+          open={showRateAppointment}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <Box className="modal-overlay">
+            <RateAppointment appointment={selectedAppointment} />
+          </Box>
+        </Modal>
+      )}
     </div>
   );
 };

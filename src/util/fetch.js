@@ -1,5 +1,38 @@
 const baseApiURL = "http://localhost:8080/";
 
+export const doRegister = (emailId, password, firstName, lastName, mobile) => {
+    let promiseResolveRef = null;
+    let promiseRejectRef = null;
+    let promise = new Promise((resolve, reject) => {
+        promiseResolveRef = resolve;
+        promiseRejectRef = reject;
+    });
+    fetch(baseApiURL + 'users/register', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ emailId, password, firstName, lastName, mobile })
+    }).then((response) => {
+        if (response.ok) {
+            promiseResolveRef({
+                json: response.json()
+            });
+        } else {
+            promiseRejectRef({
+                reason: "Bad Credentials. Please try again.",
+                response: response,
+            });
+        }
+    }).catch((err) => {
+        promiseRejectRef({
+            reason: "Some error occurred. Please try again.",
+            response: err,
+        });
+    });
+    return promise;
+};
+
 export const doLogin = (email, password) => {
     let promiseResolveRef = null;
     let promiseRejectRef = null;
@@ -65,39 +98,6 @@ export const doLogout = (accessToken) => {
         if (response.ok) {
             promiseResolveRef({
                 response: response
-            });
-        } else {
-            promiseRejectRef({
-                reason: "Bad Credentials. Please try again.",
-                response: response,
-            });
-        }
-    }).catch((err) => {
-        promiseRejectRef({
-            reason: "Some error occurred. Please try again.",
-            response: err,
-        });
-    });
-    return promise;
-};
-
-export const doRegister = (emailId, password, firstName, lastName, mobile) => {
-    let promiseResolveRef = null;
-    let promiseRejectRef = null;
-    let promise = new Promise((resolve, reject) => {
-        promiseResolveRef = resolve;
-        promiseRejectRef = reject;
-    });
-    fetch(baseApiURL + 'users/register', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ emailId, password, firstName, lastName, mobile })
-    }).then((response) => {
-        if (response.ok) {
-            promiseResolveRef({
-                json: response.json()
             });
         } else {
             promiseRejectRef({
@@ -184,6 +184,77 @@ export const getDoctor = (id) => {
     return promise;
 };
 
+//http://localhost:8080/doctors/0ac29ab8-5943-4086-aaa9-44602d7cd73e/timeSlots?date=2025-01-17
+
+export const getTimeSlots = (doctorId, date) => {
+    let promiseResolveRef = null;
+    let promiseRejectRef = null;
+    let promise = new Promise((resolve, reject) => {
+        promiseResolveRef = resolve;
+        promiseRejectRef = reject;
+    });
+    fetch(baseApiURL + 'doctors/' + doctorId + '/timeSlots?date=' + date)
+        .then((response) => {
+            response.json().then((json) => {
+                if (response.ok) {
+                    promiseResolveRef(
+                        json
+                    );
+                } else {
+                    promiseRejectRef({
+                        reason: "Error fetching doctor details",
+                        response: response,
+                    });
+                }
+            }).catch((error) => {
+                promiseRejectRef({
+                    reason: "Error fetching doctor details",
+                    response: error,
+                });
+            });
+        }).catch((err) => {
+            promiseRejectRef({
+                reason: "Error fetching doctor details",
+                response: err,
+            });
+        });
+    return promise;
+};
+
+export const doBookAppointment = (accessToken, appointment) => {
+    let promiseResolveRef = null;
+    let promiseRejectRef = null;
+    let promise = new Promise((resolve, reject) => {
+        promiseResolveRef = resolve;
+        promiseRejectRef = reject;
+    });
+    fetch(baseApiURL + "appointments", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(appointment)
+    }).then((response) => {
+        if (response.ok) {
+            promiseResolveRef({
+                json: response.json()
+            });
+        } else {
+            promiseRejectRef({
+                reason: "Either the slot is already booked or not available",
+                response: response,
+            });
+        }
+    }).catch((err) => {
+        promiseRejectRef({
+            reason: "Error booking appointments",
+            response: err,
+        });
+    });
+    return promise;
+}
+
 export const getAppointments = (userId, accessToken) => {
     let promiseResolveRef = null;
     let promiseRejectRef = null;
@@ -262,39 +333,5 @@ export const doRateAppointment = (accessToken, rating) => {
                 response: err,
             });
         });
-    return promise;
-}
-
-export const doBookAppointment = (accessToken, appointment) => {
-    let promiseResolveRef = null;
-    let promiseRejectRef = null;
-    let promise = new Promise((resolve, reject) => {
-        promiseResolveRef = resolve;
-        promiseRejectRef = reject;
-    });
-    fetch(baseApiURL + "appointments", {
-        method: "POST",
-        headers: {
-            "Authorization": "Bearer " + accessToken,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(appointment)
-    }).then((response) => {
-        if (response.ok) {
-            promiseResolveRef({
-                json: response.json()
-            });
-        } else {
-            promiseRejectRef({
-                reason: "Error booking appointment",
-                response: response,
-            });
-        }
-    }).catch((err) => {
-        promiseRejectRef({
-            reason: "Error fetching appointments",
-            response: err,
-        });
-    });
     return promise;
 }
