@@ -11,7 +11,7 @@ const AuthRoute = ({ role, children }) => {
 	let page = <Login />;
 
 	if(loggedInUser !== null) {
-		page = hasRole(role)? children: <Navigate to={"/home"} />;
+		page = hasRole(role)? children: <Navigate to={""} />;
 	}
 	
 	return page;

@@ -25,15 +25,15 @@ const Login = () => {
 		password: {
 			value: "",
 			error: false,
-			errorMessage: "Please enter valid password.",
+			errorMessage: null
 		},
 	};
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [loginError, setLoginError] = useState("");
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [emailError, setUsernameError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
+	const [loginError, setLoginError] = useState("");
 
 	const [formData, setFormData] = useState(initialState);
 	const [busy, setBusy] = useState(false);
@@ -41,7 +41,7 @@ const Login = () => {
 	const { login, loggedInUser } = useContext(AuthCtx);
 	const history = useNavigate();
 	const location = useLocation();
-	const { from } = (location && location.state) || { from: { pathname: "/home" } };
+	const { from } = (location && location.state) || { from: { pathname: "/" } };
 	const { ServicesCtx } = useService();
 	const { showMessage } = useContext(ServicesCtx);
 
@@ -92,7 +92,7 @@ const Login = () => {
 		let message = null;
 		if (value == null || value.length === 0) {
 			valid = false;
-			message = "This field is required.";
+			message = "Please fill out this field";
 		} else {
 			switch (field) {
 				case "username": {
@@ -101,7 +101,7 @@ const Login = () => {
 						message = "Email can be of length 255 characters";
 					} else {
 						valid = matchRegex(value, "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$");
-						message = "Please enter valid email.";
+						message = "Enter valid Email";
 					}
 					break;
 				}
@@ -146,42 +146,47 @@ const Login = () => {
 		});
 	};
 
-		return (
-          <FormControl className="login-container-5">
-          <div className="input-container-5">
-            <TextField id="username"
-									label="Email Address *"
-									variant="standard"
-									fullWidth
-									type="email"
-									value={formData.username.value}
-									onChange={(event) => saveOnFieldChange("username", event.target.value)}
-									onBlur={(event) => validateAndSaveLoginData("username", event.target.value)}
-									error={formData.username.error}
-									helperText={formData.username.error && formData.username.errorMessage}
-								/>
-          </div>
-          <div className="input-container-5">
-            <TextField id="password"
-									label="Password *"
-									variant="standard"
-									fullWidth
-									type="password"
-									value={formData.password.value}
-									onChange={(event) => saveOnFieldChange("password", event.target.value)}
-									onBlur={(event) => validateAndSaveLoginData("password", event.target.value)}
-									error={formData.password.error}
-									helperText={formData.password.error && formData.password.errorMessage}
-								/>
-            {loginError !== "" && <p className="error-message-1">{loginError}</p>}
-          </div>
-          <div className="login-button-container-5">
-            <Button color="primary" variant="contained" size="small" onClick={validateAndLoginData}>
-              LOGIN
-            </Button>
-          </div>
-        </FormControl>    
-		);
+	return (
+		<FormControl className="login-container-5">
+			<div className="input-container-5">
+				<TextField id="username"
+					label="Email Address *"
+					variant="standard"
+					fullWidth
+					type="email"
+					value={formData.username.value}
+					onChange={(event) => saveOnFieldChange("username", event.target.value)}
+					onBlur={(event) => validateAndSaveLoginData("username", event.target.value)}
+				/>
+				{formData.username.error &&
+					<div className="tooltip-required-validation">
+						<Tooltip placement="bottom-start">
+							{formData.username.errorMessage}
+						</Tooltip>
+					</div>
+				}
+			</div>
+			<div className="input-container-5">
+				<TextField id="password"
+					label="Password *"
+					variant="standard"
+					fullWidth
+					type="password"
+					value={formData.password.value}
+					onChange={(event) => saveOnFieldChange("password", event.target.value)}
+					onBlur={(event) => validateAndSaveLoginData("password", event.target.value)}
+					error={formData.password.error}
+					helperText={formData.password.error && formData.password.errorMessage}
+				/>
+				{loginError !== "" && <p className="error-message-1">{loginError}</p>}
+			</div>
+			<div className="login-button-container-5">
+				<Button color="primary" variant="contained" size="small" onClick={validateAndLoginData}>
+					LOGIN
+				</Button>
+			</div>
+		</FormControl>
+	);
 };
 
 export default Login;

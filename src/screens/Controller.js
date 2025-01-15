@@ -22,6 +22,9 @@ const theme = createTheme({
 		secondary: {
 			main: '#f50057',
 		},
+		info: {
+			main: '#00DDFF',
+		},
 		disabled: {
 			main: "#56595c",
 		}

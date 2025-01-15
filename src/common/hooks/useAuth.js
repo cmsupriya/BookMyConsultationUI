@@ -10,6 +10,7 @@ const useAuth = () => {
 	let persistInCache = (json) => {
 		initialState.user = json.username;
 		initialState.userId = json.userId;
+		initialState.userName = json.firstName + " " + json.lastName;
 		initialState.roles = json.roles;
 		initialState.accessToken = json.accessToken;
 		initialState.accessTokenTimeout = json.accessTokenTimeout;
@@ -20,6 +21,7 @@ const useAuth = () => {
 		initialState = {
 			user: null,
 			userId: null,
+			userName:null,
 			roles: null,
 			accessToken: null,
 			accessTokenTimeout: null,
@@ -31,6 +33,7 @@ const useAuth = () => {
 		initialState = {
 			user: null,
 			userId: null,
+			userName:null,
 			roles: null,
 			accessToken: null,
 			accessTokenTimeout: null,
@@ -44,6 +47,7 @@ const useAuth = () => {
 
 	const [loggedInUser, setLoggedInUser] = useState(initialState.user);
 	const [loggedInUserId, setLoggedInUserId] = useState(initialState.userId);
+	const [loggedInUserName, setLoggedInUserName] = useState(initialState.userName);
 	const [roles, setRoles] = useState(initialState.roles);
 	const [accessToken, setAccessToken] = useState(initialState.accessToken);
 	const [accessTokenTimeout, setAccessTokenTimeout] = useState(initialState.accessTokenTimeout);
@@ -59,6 +63,7 @@ const useAuth = () => {
 		doLogin(email, password).then(json => {
 			setLoggedInUser(json.username);
 			setLoggedInUserId(json.userId);
+			setLoggedInUserName(json.firstName + " " + json.lastName);
 			setRoles(json.roles);
 			setAccessToken(json.accessToken);
 			setAccessTokenTimeout(json.accessTokenTimeout);
@@ -68,6 +73,7 @@ const useAuth = () => {
 		}).catch(json => {
 			setLoggedInUser(null);
 			setLoggedInUserId(null);
+			setLoggedInUserName(null);
 			setRoles(null);
 			setAccessToken(null);
 			setAccessTokenTimeout(null);
@@ -87,6 +93,7 @@ const useAuth = () => {
 		doLogout(accessToken).then(json => {
 			setLoggedInUser(null);
 			setLoggedInUserId(null);
+			setLoggedInUserName(null);
 			setRoles(null);
 			setAccessToken(null);
 			setAccessTokenTimeout(null);
@@ -96,6 +103,7 @@ const useAuth = () => {
 		}).catch(json => {
 			setLoggedInUser(null);
 			setLoggedInUserId(null);
+			setLoggedInUserName(null);
 			setRoles(null);
 			setAccessToken(null);
 			setAccessTokenTimeout(null);
@@ -128,7 +136,7 @@ const useAuth = () => {
 	return {
 		AuthCtx,
 		AuthProvider: ({ children }) => (
-			<AuthCtx.Provider value={{ loginError, loggedInUser, loggedInUserId, accessToken, accessTokenTimeout, roles, login, logout, hasRole, isAccessTokenValid }}>
+			<AuthCtx.Provider value={{ loginError, loggedInUser, loggedInUserId, loggedInUserName, accessToken, accessTokenTimeout, roles, login, logout, hasRole, isAccessTokenValid }}>
 				{children}
 			</AuthCtx.Provider>
 		)

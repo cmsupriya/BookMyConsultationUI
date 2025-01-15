@@ -49,7 +49,7 @@ const Register = () => {
   const [formData, setFormData] = useState(initialState);
   const [busy, setBusy] = useState(false);
   const { AuthCtx } = useAuth();
-  const { register, loggedInUser } = useContext(AuthCtx);
+  const { login, loggedInUser } = useContext(AuthCtx);
   const history = useNavigate();
   const location = useLocation();
   const { from } = (location && location.state) || { from: { pathname: "/home" } };
@@ -81,10 +81,13 @@ const Register = () => {
     }
     setFormData(data);
     if (validDetails) {
-      debugger
       doRegister(requestJson.username, requestJson.password, requestJson.firstname, requestJson.lastname, requestJson.contactnumber).then(() => {
-        showMessage("Register successful", "success");
-        setBusy(false);
+        showMessage("Registration Successful", "success");
+        login(requestJson.username, requestJson.password).then(() => {
+          setBusy(false);
+        }).catch(json => {
+          setBusy(false);
+        });
       }).catch(json => {
         showMessage(json.reason, "error");
         setBusy(false);
@@ -107,26 +110,26 @@ const Register = () => {
       message = "This field is required.";
     } else {
       switch (field) {
-				case "firstname": {
-					if (value.length > 255) {
-						valid = false;
-						message = "First name can be of length 255 characters";
-					} else {
-						valid = matchRegex(value, "^([A-Za-z]+)$");
-						message = "Please enter valid first name.";
-					}
-					break;
-				}
-				case "lastname": {
-					if (value.length > 255) {
-						valid = false;
-						message = "Last name can be of length 255 characters";
-					} else {
-						valid = matchRegex(value, "^([A-Za-z]+)$");
-						message = "Please enter valid last name.";
-					}
-					break;
-				}
+        case "firstname": {
+          if (value.length > 255) {
+            valid = false;
+            message = "First name can be of length 255 characters";
+          } else {
+            valid = matchRegex(value, "^([A-Za-z]+)$");
+            message = "Please enter valid first name.";
+          }
+          break;
+        }
+        case "lastname": {
+          if (value.length > 255) {
+            valid = false;
+            message = "Last name can be of length 255 characters";
+          } else {
+            valid = matchRegex(value, "^([A-Za-z]+)$");
+            message = "Please enter valid last name.";
+          }
+          break;
+        }
         case "username": {
           if (value.length > 255) {
             valid = false;
@@ -145,10 +148,10 @@ const Register = () => {
           break;
         }
         case "contactnumber": {
-					valid = matchRegex(value, "^([0-9]{10})$");
-					message = "Please enter valid contact number.";
-					break;
-				}
+          valid = matchRegex(value, "^([0-9]{10})$");
+          message = "Please enter valid contact number.";
+          break;
+        }
         default: {
           return;
         }

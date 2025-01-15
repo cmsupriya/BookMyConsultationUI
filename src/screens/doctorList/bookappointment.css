@@ -1,5 +1,5 @@
 .book-appointment-modal {
-  width: 700px;
+  width: 800px;
 }
 
 .appointment-date {
@@ -27,4 +27,30 @@
 .doctor-name, .time-slot, .prior-medical-history, .symptoms {
   display: block !important;
   margin: 5px 0 10px 0 !important;
+}
+
+.error-dialog > div:nth-child(3) > div {
+  background-color: #42414D;
+  color: #fff;
+  font-size: 10px;
+  border-radius: 5px;
+  width: 350px;
+  margin: 0;
+}
+
+.dialog-title {
+  svg, label {
+    vertical-align: middle;
+  }
+  label {
+    font-size: 15px;
+  }
+}
+
+.dialog-content {
+  padding: 5px 20px !important;
+}
+
+.dialog-actions {
+  padding: 16px !important;
 }

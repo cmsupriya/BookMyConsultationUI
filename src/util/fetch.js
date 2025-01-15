@@ -184,8 +184,6 @@ export const getDoctor = (id) => {
     return promise;
 };
 
-//http://localhost:8080/doctors/0ac29ab8-5943-4086-aaa9-44602d7cd73e/timeSlots?date=2025-01-17
-
 export const getTimeSlots = (doctorId, date) => {
     let promiseResolveRef = null;
     let promiseRejectRef = null;

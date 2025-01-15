@@ -101,3 +101,11 @@
   display: flex;
   width: 30%;
 }
+
+.tooltip-required-validation {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  padding: 12px;
+  font-size: 10px;
+}

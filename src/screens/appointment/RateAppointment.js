@@ -37,7 +37,7 @@ const RateAppointment = ({ appointment }) => {
 
   const validateRating = () => {
     if (rating.rating === 0) {
-      setErrorState({ rating: { error: true, errorMessage: "Submit a rating" } });
+      setErrorState({ rating: { error: true, errorMessage: "Select a rating" } });
       return false;
     } else {
       setErrorState({ rating: { error: false, errorMessage: null } });
