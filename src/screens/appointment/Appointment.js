@@ -46,7 +46,7 @@ const Appointment = () => {
       {loggedInUserId != null && appointments.length > 0 && appointments.map((appointment, index) => (
         <Box key={index} className="appointment-item" sx={(theme) => ({ boxShadow: 1, borderRadius: 1 })}>
           <div>
-            <h3>Doctor's Name : {appointment.doctorName}</h3>
+            <h4>Dr: {appointment.doctorName}</h4>
             <h5>Appointment Date : {appointment.appointmentDate}</h5>
             <h5>Symptoms : {appointment.symptoms}</h5>
             <h5>Previous Medical History : {appointment.priorMedicalHistory}</h5>

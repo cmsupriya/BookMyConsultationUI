@@ -69,7 +69,7 @@ const DoctorList = () => {
         <div>
           {filteredDoctors.map((doctor, index) => (
             <Box className="doctor-box" key={index} sx={(theme) => ({ boxShadow: 1, borderRadius: 1 })}>
-              <h5 className="doctor-name">Name : {doctor.firstName + " " + doctor.lastName}</h5>
+              <h5 className="doctor-name"> Doctor Name : {doctor.firstName + " " + doctor.lastName}</h5>
               <h5 className="speciality">Speciality : {doctor.speciality}</h5>
               <h5 className="rating">Rating : <Rating value={doctor.rating} readOnly /></h5>
               <div className="button-container">

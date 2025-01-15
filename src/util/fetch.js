@@ -62,7 +62,7 @@ export const doLogin = (email, password) => {
                 });
             } else {
                 promiseRejectRef({
-                    reason: "Bad Credentials. Please try again.",
+                    reason: json.message,
                     response: response,
                 });
             }

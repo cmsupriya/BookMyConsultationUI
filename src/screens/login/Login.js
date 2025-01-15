@@ -20,11 +20,13 @@ const Login = () => {
 		username: {
 			value: "",
 			error: false,
+			errorCode: null,
 			errorMessage: null,
 		},
 		password: {
 			value: "",
 			error: false,
+			errorCode: null,
 			errorMessage: null
 		},
 	};
@@ -61,6 +63,7 @@ const Login = () => {
 			data[k] = {
 				value: data[k].value,
 				error: !json.valid,
+				errorCode: json.code,
 				errorMessage: json.message,
 			};
 			validDetails = validDetails && json.valid;
@@ -89,18 +92,22 @@ const Login = () => {
 
 	let getValidity = (field, value) => {
 		let valid = true;
+		let code = null;
 		let message = null;
 		if (value == null || value.length === 0) {
 			valid = false;
+			code = 1;
 			message = "Please fill out this field";
 		} else {
 			switch (field) {
 				case "username": {
 					if (value.length > 255) {
 						valid = false;
+						code = 2;
 						message = "Email can be of length 255 characters";
 					} else {
 						valid = matchRegex(value, "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$");
+						code = 2;
 						message = "Enter valid Email";
 					}
 					break;
@@ -108,7 +115,8 @@ const Login = () => {
 				case "password": {
 					if (value.length < 6 || 40 < value.length) {
 						valid = false;
-						message = "Password's length must be between 6 and 40."
+						code = 2;
+						message = "Password's length must be between 6 and 40"
 					}
 					break;
 				}
@@ -119,6 +127,7 @@ const Login = () => {
 		}
 		return {
 			valid,
+			code,
 			message
 		};
 	};
@@ -131,6 +140,7 @@ const Login = () => {
 		data[fieldName] = {
 			value: data[fieldName].value,
 			error: !json.valid,
+			errorCode: json.code,
 			errorMessage: json.message,
 		}
 		setFormData(data);
@@ -150,18 +160,20 @@ const Login = () => {
 		<FormControl className="login-container-5">
 			<div className="input-container-5">
 				<TextField id="username"
-					label="Email Address *"
+					label="Email *"
 					variant="standard"
 					fullWidth
 					type="email"
 					value={formData.username.value}
 					onChange={(event) => saveOnFieldChange("username", event.target.value)}
 					onBlur={(event) => validateAndSaveLoginData("username", event.target.value)}
+					error={formData.username.error}
+					helperText={formData.username.error && formData.username.errorCode === 2 && formData.username.errorMessage}
 				/>
-				{formData.username.error &&
-					<div className="tooltip-required-validation">
+				{formData.username.error && formData.username.errorCode === 1 &&
+					<div className='tooltip-required-validation'>
 						<Tooltip placement="bottom-start">
-							{formData.username.errorMessage}
+							<label>{formData.username.errorMessage}</label>
 						</Tooltip>
 					</div>
 				}
@@ -176,8 +188,15 @@ const Login = () => {
 					onChange={(event) => saveOnFieldChange("password", event.target.value)}
 					onBlur={(event) => validateAndSaveLoginData("password", event.target.value)}
 					error={formData.password.error}
-					helperText={formData.password.error && formData.password.errorMessage}
+					helperText={formData.password.error && formData.password.errorCode === 2 && formData.password.errorMessage}
 				/>
+				{formData.password.error && formData.password.errorCode === 1 &&
+					<div className='tooltip-required-validation'>
+						<Tooltip placement="bottom-start">
+							<label>{formData.password.errorMessage}</label>
+						</Tooltip>
+					</div>
+				}
 				{loginError !== "" && <p className="error-message-1">{loginError}</p>}
 			</div>
 			<div className="login-button-container-5">

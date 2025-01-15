@@ -21,26 +21,31 @@ const Register = () => {
     firstname: {
       value: "",
       error: false,
+      errorCode: null,
       errorMessage: null,
     },
     lastname: {
       value: "",
       error: false,
+      errorCode: null,
       errorMessage: null,
     },
     username: {
       value: "",
       error: false,
+      errorCode: null,
       errorMessage: null,
     },
     password: {
       value: "",
       error: false,
+      errorCode: null,
       errorMessage: "Please enter valid password.",
     },
     contactnumber: {
       value: "",
       error: false,
+      errorCode: null,
       errorMessage: null,
     },
   };
@@ -72,6 +77,7 @@ const Register = () => {
       data[k] = {
         value: data[k].value,
         error: !json.valid,
+        errorCode: json.code,
         errorMessage: json.message,
       };
       validDetails = validDetails && json.valid;
@@ -104,52 +110,62 @@ const Register = () => {
 
   let getValidity = (field, value) => {
     let valid = true;
+    let code = null;
     let message = null;
     if (value == null || value.length === 0) {
       valid = false;
-      message = "This field is required.";
+      code = 1;
+      message = "Please fill out this field";
     } else {
       switch (field) {
         case "firstname": {
           if (value.length > 255) {
             valid = false;
+            code = 2;
             message = "First name can be of length 255 characters";
           } else {
             valid = matchRegex(value, "^([A-Za-z]+)$");
-            message = "Please enter valid first name.";
+            code = 2;
+            message = "Enter valid First Name";
           }
           break;
         }
         case "lastname": {
           if (value.length > 255) {
             valid = false;
+            code = 2;
             message = "Last name can be of length 255 characters";
           } else {
             valid = matchRegex(value, "^([A-Za-z]+)$");
-            message = "Please enter valid last name.";
+            code = 2;
+            message = "Enter valid Last Name";
           }
           break;
         }
         case "username": {
           if (value.length > 255) {
             valid = false;
+            code = 2;
             message = "Email can be of length 255 characters";
           } else {
             valid = matchRegex(value, "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$");
-            message = "Please enter valid email.";
+            code = 2;
+            message = "Enter valid Email";
           }
           break;
         }
         case "password": {
           if (value.length < 6 || 40 < value.length) {
             valid = false;
-            message = "Password's length must be between 6 and 40."
+            code = 2;
+            message = "Password's length must be between 6 and 40"
           }
           break;
         }
         case "contactnumber": {
           valid = matchRegex(value, "^([0-9]{10})$");
-          message = "Please enter valid contact number.";
+          message = "Enter valid mobile number";
+          code = 2;
           break;
         }
         default: {
@@ -159,6 +175,7 @@ const Register = () => {
     }
     return {
       valid,
+      code,
       message
     };
   };
@@ -171,6 +188,7 @@ const Register = () => {
     data[fieldName] = {
       value: data[fieldName].value,
       error: !json.valid,
+      errorCode: json.code,
       errorMessage: json.message,
     }
     setFormData(data);
@@ -196,8 +214,15 @@ const Register = () => {
           onChange={(event) => saveOnFieldChange("firstname", event.target.value)}
           onBlur={(event) => validateAndSaveRegisterData("firstname", event.target.value)}
           error={formData.firstname.error}
-          helperText={formData.firstname.error && formData.firstname.errorMessage}
+          helperText={formData.firstname.error && formData.firstname.errorCode === 2 && formData.firstname.errorMessage}
         />
+        {formData.firstname.error && formData.firstname.errorCode === 1 &&
+          <div className='tooltip-required-validation'>
+            <Tooltip placement="bottom-start">
+              <label>{formData.firstname.errorMessage}</label>
+            </Tooltip>
+          </div>
+        }
       </div>
       <div className="input-container-5">
         <TextField id="lastname"
@@ -207,12 +232,19 @@ const Register = () => {
           onChange={(event) => saveOnFieldChange("lastname", event.target.value)}
           onBlur={(event) => validateAndSaveRegisterData("lastname", event.target.value)}
           error={formData.lastname.error}
-          helperText={formData.lastname.error && formData.lastname.errorMessage}
+          helperText={formData.lastname.error && formData.lastname.errorCode === 2 && formData.lastname.errorMessage}
         />
+        {formData.lastname.error && formData.lastname.errorCode === 1 &&
+          <div className='tooltip-required-validation'>
+            <Tooltip placement="bottom-start">
+              <label>{formData.lastname.errorMessage}</label>
+            </Tooltip>
+          </div>
+        }
       </div>
       <div className="input-container-5">
         <TextField id="username"
-          label="Email Address *"
+          label="Email Id *"
           variant="standard"
           fullWidth
           type="email"
@@ -220,8 +252,15 @@ const Register = () => {
           onChange={(event) => saveOnFieldChange("username", event.target.value)}
           onBlur={(event) => validateAndSaveRegisterData("username", event.target.value)}
           error={formData.username.error}
-          helperText={formData.username.error && formData.username.errorMessage}
+          helperText={formData.username.error && formData.username.errorCode === 2 && formData.username.errorMessage}
         />
+        {formData.username.error && formData.username.errorCode === 1 &&
+          <div className='tooltip-required-validation'>
+            <Tooltip placement="bottom-start">
+              <label>{formData.username.errorMessage}</label>
+            </Tooltip>
+          </div>
+        }
       </div>
       <div className="input-container-5">
         <TextField id="password"
@@ -233,19 +272,33 @@ const Register = () => {
           onChange={(event) => saveOnFieldChange("password", event.target.value)}
           onBlur={(event) => validateAndSaveRegisterData("password", event.target.value)}
           error={formData.password.error}
-          helperText={formData.password.error && formData.password.errorMessage}
+          helperText={formData.password.error && formData.password.errorCode === 2 && formData.password.errorMessage}
         />
+        {formData.password.error && formData.password.errorCode === 1 &&
+          <div className='tooltip-required-validation'>
+            <Tooltip placement="bottom-start">
+              <label>{formData.password.errorMessage}</label>
+            </Tooltip>
+          </div>
+        }
       </div>
       <div className="input-container-5">
         <TextField id="contactnumber"
-          label="Contact Number *"
+          label="Mobile No. *"
           variant="standard"
           value={formData.contactnumber.value}
           onChange={(event) => saveOnFieldChange("contactnumber", event.target.value)}
           onBlur={(event) => validateAndSaveRegisterData("contactnumber", event.target.value)}
           error={formData.contactnumber.error}
-          helperText={formData.contactnumber.error && formData.contactnumber.errorMessage}
+          helperText={formData.contactnumber.error && formData.contactnumber.errorCode === 2 && formData.contactnumber.errorMessage}
         />
+        {formData.contactnumber.error && formData.contactnumber.errorCode === 1 &&
+          <div className='tooltip-required-validation'>
+            <Tooltip placement="bottom-start">
+              <label>{formData.contactnumber.errorMessage}</label>
+            </Tooltip>
+          </div>
+        }
         {registerError !== "" && <p className="error-message-1">{registerError}</p>}
       </div>
       <div className="register-button-container-5">

@@ -21,7 +21,7 @@
   }
   
   .home-container button:hover, .home-container button.active {
-    border-color: rgb(249, 169, 182); 
+    border-color: #6372C3; 
     border-width: 2px;
   }
 
